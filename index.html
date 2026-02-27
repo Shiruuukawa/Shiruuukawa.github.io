@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>The BSCS</title>
+<link rel="icon" type="image/png" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/tasks.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" onclick="showPage('home')">
+    <img src="assets/icon.png" alt="BSCS"
+         onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\'font-family:Syne,sans-serif;font-weight:800;color:var(--g6);font-size:1rem\'>BSCS</span>')">
+  </a>
+  <div class="nav-links">
+    <a onclick="showPage('home')"      id="nav-home">Home</a>
+    <a onclick="showPage('tasks')"     id="nav-tasks">Tasks</a>
+    <a onclick="showPage('calendar')"  id="nav-calendar">Calendar</a>
+    <a onclick="showPage('schedule')"  id="nav-schedule">Schedule</a>
+    <a onclick="showPage('reminders')" id="nav-reminders">Reminder</a>
+    <a onclick="showPage('about')"     id="nav-about">About</a>
+  </div>
+</nav>
+
+<div id="toast">
+  <span id="toastIcon">✓</span>
+  <span id="toastMessage">Done!</span>
+</div>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="home-bg">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <div class="badge"><div class="badge-dot"></div>🎓 Academic Year 2025 – 2026</div>
+
+  <div class="logo-container">
+    <img src="assets/logo.png" alt="BSCS Logo"
+         onerror="this.outerHTML='<span style=\'font-family:Syne,sans-serif;font-size:2.5rem;font-weight:800;color:var(--accent)\'>BSCS</span>'">
+  </div>
+
+  <h1 class="home-title">The BSCS</h1>
+  <p class="home-subtitle">BSCS 2 – 1</p>
+  <p class="home-sub">Your all in one academic companion; manage tasks, track your schedule, and never miss a deadline.</p>
+
+  <div class="feature-cards">
+    <div class="feature-card" onclick="showPage('tasks')">
+      <div class="ficon">📝</div>
+      <h3>Shared Tasks</h3>
+      <p>Create task for everyone to remind</p>
+    </div>
+    <div class="feature-card" onclick="showPage('calendar')">
+      <div class="ficon">📅</div>
+      <h3>Task Calendar</h3>
+      <p>See all due dates at a glance. Click a day to view its tasks.</p>
+    </div>
+    <div class="feature-card" onclick="showPage('schedule')">
+      <div class="ficon">🗓</div>
+      <h3>Class Schedule</h3>
+      <p>Semestral timeline of subjects.</p>
+    </div>
+    <div class="feature-card" onclick="showPage('reminders')">
+      <div class="ficon">🔔</div>
+      <h3>Personal Reminders</h3>
+      <p>Make a personal reminder for yourself to remind to do something.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TASKS -->
+<div id="tasks" class="page">
+  <div class="section-wrap">
+    <div class="user-bar">
+      <h2 class="page-title" style="margin:0">Tasks</h2>
+      <div id="userSection">
+        <button class="btn" onclick="openProfileModal()">👤 Sign In</button>
+      </div>
+    </div>
+
+    <div class="glass-card" id="taskInputSection" style="display:none">
+      <div class="task-input-row">
+        <input type="text" class="input-field" id="taskInput" placeholder="What needs to be done?">
+        <input type="date" class="input-field" id="taskDate" style="max-width:160px" title="Due date (optional)">
+        <button class="btn" onclick="addTask()">Add</button>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterTasks('all',this)">All</button>
+      <button class="filter-btn" onclick="filterTasks('pending',this)">Pending</button>
+      <button class="filter-btn" onclick="filterTasks('done',this)">Done</button>
+    </div>
+
+    <div class="task-list" id="taskList">
+      <div class="empty-state"><div class="empty-icon">📝</div><p>Sign in and add your first task!</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- CALENDAR -->
+<div id="calendar" class="page">
+  <div class="section-wrap">
+    <div class="cal-header">
+      <div class="cal-nav-btns">
+        <button class="cal-nav-btn" onclick="calPrev()">&#8592;</button>
+        <button class="btn btn-secondary btn-sm" onclick="calGoToday()" style="border-radius:20px">Today</button>
+        <button class="cal-nav-btn" onclick="calNext()">&#8594;</button>
+      </div>
+      <h2 id="calMonthLabel" class="cal-month-label">—</h2>
+    </div>
+
+    <div class="glass-card" style="padding:14px">
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <div id="calTasksPanel" style="display:none"></div>
+
+    <p style="text-align:center;color:var(--text-mute);font-size:0.76rem;margin-top:10px">
+      Dots = tasks due that day &nbsp;·&nbsp; Click a date to view tasks
+    </p>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="schedule" class="page">
+  <div class="section-wrap">
+    <div class="schedule-toolbar">
+      <h2 class="page-title" style="margin:0">🗓 Schedule</h2>
+      <div class="schedule-toolbar-btns">
+        <button class="btn" id="adminBtn" onclick="toggleAdminMode()">✏️ Admin</button>
+        <button class="btn btn-secondary" id="saveSchedBtn" onclick="saveScheduleChanges()" style="display:none">💾 Save</button>
+      </div>
+    </div>
+
+    <div class="glass-card" style="padding:12px">
+      <div class="schedule-outer">
+        <table class="schedule-table">
+          <thead id="scheduleHead"></thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="summary-title">Subject Summary</div>
+    <div class="glass-card" style="padding:12px">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th style="width:36px">#</th>
+            <th>Subject</th>
+          </tr>
+        </thead>
+        <tbody id="summaryBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- REMINDERS -->
+<div id="reminders" class="page">
+  <div class="section-wrap">
+    <h2 class="page-title">🔔 Reminders</h2>
+    <p style="color:var(--text-mute);font-size:0.8rem;margin-top:-1rem;margin-bottom:1.2rem">
+      🔒 Personal — only you can see your own reminders.
+    </p>
+
+    <div class="glass-card">
+      <div class="input-group">
+        <label>What to remind?</label>
+        <input type="text" class="input-field" id="reminderText" placeholder="enter your reminder">
+      </div>
+      <div class="datetime-row">
+        <div class="input-group" style="margin-bottom:0">
+          <label>📅 Date</label>
+          <input type="date" class="input-field" id="reminderDate">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label>🕐 Time</label>
+          <input type="time" class="input-field" id="reminderTimeInput">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px">
+        <div class="file-input-wrapper">
+          <input type="file" id="reminderFile">
+          <label for="reminderFile" class="file-label" id="fileLabel">📎 Attach File (Optional)</label>
+        </div>
+        <button class="btn" onclick="addReminder()">🔔 Set Reminder</button>
+      </div>
+    </div>
+
+    <div class="reminder-list" id="reminderList">
+      <div class="empty-state"><div class="empty-icon">🔔</div><p>No reminders yet. Set one above!</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about" class="page">
+  <div class="section-wrap">
+    <div class="about-content">
+      <h2 class="page-title">About The BSCS</h2>
+
+      <div class="glass-card">
+        <div class="dev-row">
+          <div class="about-logo" >
+          <img src="assets/logo.png" alt="BSCS Logo"
+            onerror="this.outerHTML='<span style=\'font-family:Syne,sans-serif;font-size:2.5rem;font-weight:800;color:var(--accent)\'>BSCS</span>'">
+          </div>
+          <div class="dev-info">
+            <h3>About this project :</h3>
+            <p>The BSCS is a simple web platform built for BSCS 2 - 1 students. This website helps you manage your school tasks, check your weekly schedule, and set reminders for important deadlines.<br>
+<br>The Task page lets you add and manage pending activities using your nickname. No passwords are required. This makes it easy for everyone in the class to participate and stay organized.
+<br>The Schedule page displays the official Monday to Saturday class timetable. It helps you see your subjects and time slots at a glance so you stay prepared every day.<br>
+<br>The Reminder page allows you to set alerts for upcoming tasks or events. You can type a reminder, choose a date and time, and receive a notification with a sound when it is due.<br>
+<br>This website was developed to improve productivity, organization, and communication within the class. It serves as a shared digital space where students can stay updated and manage their academic responsibilities efficiently.</p>
+            <div class="tech-stack">
+              <span class="tech-badge">HTML5</span>
+              <span class="tech-badge">CSS3</span>
+              <span class="tech-badge">Vanilla JS</span>
+              <span class="tech-badge">GitHub Pages</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <h3 style="color:var(--accent);font-family:'Syne',sans-serif;margin-bottom:14px">👨‍💻 Developer</h3>
+        <div class="devs-grid">
+          <div class="dev-card"><div class="dev-card-av">GA</div><div class="dev-card-name">Gemerick Amurao</div><div class="dev-card-role">Lead Developer</div></div>
+          <p style="color:var(--text-dim);font-size:0.82rem;line-height:1.8">
+          <br>
+          Github : <code style="background:var(--g3);padding:1px 6px;border-radius:4px">https://github.com/Shiruuukawa</code>
+          <br>
+          Johnlloyd pogi 69
+        </p>
+        </div>
+      </div>
+
+      <div class="glass-card" style="text-align:center">
+        <p style="color:var(--text-secondary);font-size:0.82rem">
+          © 2025 The BSCS – BSCS 2-1 · Open source for educational purposes.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <h3 class="modal-title">👤 Select Profile</h3>
+    <p class="modal-sub">Pick an existing nickname or create a new one.</p>
+    <div class="profiles-list" id="profilesList"></div>
+    <div style="border-top:1px solid var(--card-border);padding-top:14px;margin-top:10px">
+      <div style="font-size:0.78rem;font-weight:600;margin-bottom:8px;color:var(--text-dim)">+ New Nickname</div>
+      <div style="display:flex;gap:8px">
+        <input type="text" class="input-field" id="nicknameInput" placeholder="Your nickname…" style="flex:1">
+        <button class="btn" onclick="saveProfile()" style="padding:10px 16px">Add</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn" onclick="selectProfile()" style="flex:1">✓ Select</button>
+      <button class="btn btn-secondary" onclick="closeProfileModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="adminModal">
+  <div class="modal">
+    <h3 class="modal-title">🔑 Admin Access</h3>
+    <p class="modal-sub">Enter the admin password to edit the schedule.</p>
+    <div class="input-group">
+      <input type="password" class="input-field" id="adminPassword" placeholder="Password…">
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" onclick="verifyAdmin()" style="flex:1">Login</button>
+      <button class="btn btn-secondary" onclick="closeAdminModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="schedEditModal">
+  <div class="modal" style="max-width:500px">
+    <h3 class="modal-title">✏️ Edit Subject</h3>
+    <p class="modal-sub">Day: <strong id="editDayLabel" style="color:var(--accent)">—</strong></p>
+    <div class="input-group">
+      <label>Subject Full Name</label>
+      <input type="text" class="input-field" id="editSubjName" placeholder="Enter full subject name">
+    </div>
+    <div class="input-group">
+      <label>Short Label</label>
+      <input type="text" class="input-field" id="editSubjShort" placeholder="Enter subject code">
+    </div>
+    <div class="input-group">
+      <label>Room / Location (optional)</label>
+      <input type="text" class="input-field" id="editSubjRoom" placeholder="Enter N/A if unknown">
+    </div>
+    <div class="grid-2">
+      <div class="input-group" style="margin-bottom:0">
+        <label>Start Time</label>
+        <select class="input-field" id="editStartSlot"></select>
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label>End Time</label>
+        <select class="input-field" id="editEndSlot"></select>
+      </div>
+    </div>
+    <div class="input-group" style="margin-top:14px">
+      <label>Color</label>
+      <div class="color-row" id="colorPicker"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn" onclick="saveBlock()" style="flex:1">💾 Save</button>
+      <button class="btn btn-danger" id="deleteBlockBtn" onclick="deleteBlock()">🗑 Delete</button>
+      <button class="btn btn-secondary" onclick="closeSchedEditModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/schedule.js"></script>
+<script src="js/reminders.js"></script>
+</body>
+</html>
